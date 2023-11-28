@@ -1,11 +1,16 @@
-import Registration from "./components/Registration/Registration"
+
+import Merger from "./components/Merger"
+
+
 
 
 function App() {
 
   return (
     <>
-  <Registration/>
+     
+      <Merger/>
+   
     </>
   )
 }
