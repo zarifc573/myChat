@@ -50,9 +50,11 @@ const User = () => {
       {
         verify
           ?
-          <div className='flex justify-center items-center'>
+          <div className='flex fixed left-[50%] translate-x-[-50%]'>
             
-            <LeftBar />
+           
+               <LeftBar active='home' />
+        
             
             <div className="ml-[-20px]">
               <GroupList />

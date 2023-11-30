@@ -49,11 +49,12 @@ const FriendReq = () => {
                 {
                     friendReqList.length == 0 ?
                         <div className="mt-[30px]">
-                            <h2 className='font-poppins font-semibold text-[20px] text-red-500'>No Data Found!</h2>
+                            <h2 className='font-poppins font-semibold text-[20px] text-red-500'>No data found!</h2>
                         </div>
                         :
                     friendReqList.map((item) => (
-                        <div className="flex mt-[17px] items-center justify-between">
+                        <div className="">
+                               <div className="flex mt-[17px] items-center justify-between">
                             <div className="flex items-center">
                             <img src={raghav} alt="" />
                         <div className="ml-[14px]">
@@ -71,12 +72,14 @@ const FriendReq = () => {
                         </div>
                 </div>
                     
-                        </div>
+                            </div>
+                            <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
+                     </div>
                     ))
                 }
                
           
-              <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
+              
         
               </div>
             </div>

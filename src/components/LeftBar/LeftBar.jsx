@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 
 
-const LeftBar = () => {
+const LeftBar = ({active}) => {
   const data = useSelector(state => state.clientLoginInfo.clientInfo)
   console.log(data);
   const dispatch = useDispatch()
@@ -45,7 +45,7 @@ const LeftBar = () => {
 
    
   return (
-      <div>
+      <div className=''>
            <div className=' bg-white relative'>  
         <div className="flex ">
           <div className="bg-primary w-[186px] pb-[47px] rounded-lg ">
@@ -56,13 +56,13 @@ const LeftBar = () => {
                 <BiSolidCloudUpload className='text-white text-[25px]'/>
             </div>
             </div>
-            <div onClick={handleHome} className="relative after:absolute after:content-[''] after:w-full after:h-full after:top-0 after:left-[25px] after:z-[-1] z-[1] overflow-hidden after:bg-white py-[23px] after:rounded-[20px] before:absolute before:w-[8px] before:h-full before:bg-primary before:content-[''] before:rounded-s-[25px] before:top-0 before:right-0 before:shadow-custom mt-[78px] ">
-                <SlHome className='mx-auto text-[44px] text-primary cursor-pointer' />
+            <div onClick={handleHome} className={`relative after:absolute after:content-[''] after:w-full after:h-full after:top-0 after:left-[25px] after:z-[-1] z-[1] overflow-hidden py-[23px] after:rounded-[20px] mt-[78px] ${active == 'home' && 'after:bg-white before:absolute before:w-[8px] before:h-full before:bg-primary before:content-[""] before:rounded-s-[25px] before:top-0 before:right-0 before:shadow-custom'} select-none`}>
+                <SlHome className={`mx-auto text-[44px] ${active=='home' ? 'text-primary' : 'text-white'} cursor-pointer`} />
                 
               </div>
               
-            <div onClick={handleChat} className="mx-auto" >
-            <AiFillMessage className='mx-auto text-[46px] text-[#BAD1FF] mt-[57px] cursor-pointer'/>
+            <div onClick={handleChat} className={`relative after:absolute after:content-[''] after:w-full after:h-full after:top-0 after:left-[25px] after:z-[-1] z-[1] overflow-hidden py-[23px] after:rounded-[20px] ${active == 'chat' && 'after:bg-white before:absolute before:w-[8px] before:h-full before:bg-primary before:content-[""] before:rounded-s-[25px] before:top-0 before:right-0 before:shadow-custom'} select-none  mt-[57px]`} >
+              <AiFillMessage className={`mx-auto text-[46px] ${active=='home' ? 'text-[#BAD1FF]' : 'text-primary'}  cursor-pointer`} />
               </div>
               <IoMdNotificationsOutline className='mx-auto text-[50px] text-[#FFFFFFB2] mt-[82px] cursor-pointer'/>
                 <SlSettings className='mx-auto text-[44px] text-[#FFFFFFB2] mt-[82px] cursor-pointer' />
