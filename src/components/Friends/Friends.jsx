@@ -32,8 +32,10 @@ const Friends = () => {
       set(push(ref(db, 'block/')), {
         block: item.recievername,
         blockid: item.recieverid,
+        blockimg:item.recieverimg,
         blockedby: item.sendername,
-        blockedbyid: item.senderid
+        blockedbyid: item.senderid,
+        blockedbyimg: item.senderimg
       }).then(() => {
         remove(ref(db, 'friend/' + item.key))
       })
@@ -41,8 +43,10 @@ const Friends = () => {
       set(push(ref(db, 'block/')), {
         block: item.sendername,
         blockid: item.senderid,
+        blockimg: item.senderimg,
         blockedby: item.recievername,
-        blockedbyid: item.recieverid
+        blockedbyid: item.recieverid,
+        blockedbyimg: item.recieverimg,
       }).then(() => {
         remove(ref(db, 'friend/' + item.key))
       })
@@ -63,8 +67,13 @@ const Friends = () => {
         <div>
           {
             friendLists.map((item) => (
-              <div className="flex mt-[17px] items-center">
-              <img src={raghav} alt="" />
+              <div className="">
+                 <div className="flex mt-[17px] items-center">
+              <img src={   item.recieverimg == data.photoURL
+                        ?
+                        item.senderimg
+                        :
+                        item.recieverimg} alt="" className='h-[56px] w-[56px] rounded-full' />
               <div className="ml-[14px]">
                   <p className="text-[14px] font-semibold font-poppins">
                     {
@@ -83,12 +92,14 @@ const Friends = () => {
                             <p className='text-white font-poppins text-[20px] font-semibold'>Block</p>
                         </div>
           
-              </div>
+                </div>
+                <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
+             </div>
             ))
           }
          
           
-              <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
+              
           </div>
           
           

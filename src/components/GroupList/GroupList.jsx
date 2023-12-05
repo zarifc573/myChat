@@ -99,13 +99,17 @@ const GroupList = () => {
             }
         }
     }
+
+    const handleSideClick = () => {
+        setCategory(false)
+    }
     return (
-        <div className="">
+        <div className='relative'>
             {
                 groupPage &&
 
-                <div className='bg-black bg-opacity-[0.5] backdrop-blur-[5px] w-full h-full fixed top-0 left-0 z-50 flex justify-center items-center '>
-                    <div className="bg-white w-[600px] h-[600px] rounded-lg shadow-black drop-shadow-lg ">
+                <div className='bg-black bg-opacity-[0.5] backdrop-blur-[5px] w-full h-full fixed top-0 left-0 z-50 flex justify-center '>
+                    <div className="bg-white w-[600px] h-[600px] rounded-lg shadow-black drop-shadow-lg mt-[100px] ">
                         <div className="text-center py-[80px]">
                             <h2 className="text-primary font-poppins text-[24px] font-semibold">New Group</h2>
                             {
@@ -134,9 +138,11 @@ const GroupList = () => {
                 </div>
 
             }
+
+            {/* Menu-item */}
             {
                 category &&
-                <div className="fixed top-[130px] left-[800px] z-30 w-[200px] border-[1px] border-opacity-[0.2] bg-white border-black flex flex-col items-center justify-center rounded-md ">
+                <div className="absolute top-[150px] left-[460px] z-30 w-[200px] border-[1px] border-opacity-[0.2] bg-white border-black flex flex-col items-center justify-center rounded-md ">
                     <button onClick={handleCreateGroup} className="font-poppins flex items-center font-semibold text-[20px] text-black text-opacity-[0.7] hover:bg-primary hover:w-full justify-center hover:text-white duration-300 w-full  my-[10px]">Create group <FaSquarePlus className='ml-[10px]' /></button>
                     <button className="font-poppins flex items-center font-semibold text-[20px] text-black text-opacity-[0.7] hover:bg-primary hover:w-full justify-center hover:text-white duration-300 w-full  my-[10px]">Item1</button>
                     <button className="font-poppins flex items-center font-semibold text-[20px] text-black text-opacity-[0.7] hover:bg-primary hover:w-full justify-center hover:text-white duration-300 w-full  my-[10px]">Item1</button>

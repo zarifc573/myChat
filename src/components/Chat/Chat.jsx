@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LeftBar from '../LeftBar/LeftBar'
 import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 import swathi from '../../assets/swathi.png'
@@ -10,9 +10,45 @@ import ModalImage from "react-modal-image";
 import { MdOutlineEmojiEmotions } from "react-icons/md";
 import { CiCamera } from "react-icons/ci";
 import { RiSendPlaneFill } from "react-icons/ri";
+import { useDispatch, useSelector } from 'react-redux'
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 const Chat = () => {
+  const info = useSelector((state)=>state.operatingChatInfo.operator)
+  console.log(info)
+  const db = getDatabase();
+  const [message, setMessage]= useState('')
+  const [messageList, setMessageList]= useState([])
+  const dispatch = useDispatch()
+  const handleMsg = (e) => {
+    setMessage(e.target.value)
+  }
+  const handleMsgSend = () => {
+    if (message.length > 0) {
+      if (info.status == 'one') {
+        set(push(ref(db, 'message/')), {
+          message: message,
+        });
+      } else {
+        
+      }
+      setMessage('')
+}
+  }
+  useEffect(() => {
+    const messageRef = ref(db, 'message/');
+    onValue(messageRef, (snapshot) => {
+        let arr=[]
+        snapshot.forEach((msg) => {
+            arr.push({...msg.val(), id:msg.key})
+        })
+      setMessageList(arr)
+     
+    });
+}, [])
+  
   return (
-    <div className='flex justify-center'>
+    <div className="w-[1440px] mx-auto shadow-custom2 px-[20px] py-[10px]">
+       <div className='flex'>
       <div className="">
         <LeftBar active='chat' />
       </div>
@@ -28,7 +64,7 @@ const Chat = () => {
               <div className="h-[15px] w-[15px] rounded-[50%] bg-[#00FF75] absolute bottom-0 right-[5px] border-[2px] border-white shadow-drop"></div>
             </div>
             <div className="ml-[33px]">
-              <h3 className="text-[24px] font-poppins font-semibold leading-normal">Swathi</h3>
+              <h3 className="text-[24px] font-poppins font-semibold leading-normal">{info.name}</h3>
               <p className='text-[14px] font-poppins font-normal leading-normal'>Online</p>
             </div>
           </div>
@@ -40,7 +76,7 @@ const Chat = () => {
 
         {/* chatting portion */}
 
-        <div className="pt-[20px] pb-[50px] overflow-y-scroll h-[700px] px-[15px]">
+          <div className={`pt-[20px] pb-[20px] overflow-y-scroll h-[700px] px-[15px]`}>
           <div className="py-[30px]">
             <div className="bg-[#F1F1F1] relative inline-block py-[18px] px-[56px] rounded-[10px]">
               <p className="font-poppins text-[16px] font-medium text-black">Hey there!</p>
@@ -78,14 +114,14 @@ const Chat = () => {
             </div>
             <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">Today, 2:13pm</p>
           </div>
-          {/* me */}
+          {/* me....image */ }
           <div className="py-[30px] text-end ">
-            <div className="inline-block text-end py-[18px] px-[56px] rounded-[10px]">
+            <div className="inline-block py-[18px] rounded-[10px]">
               
               <ModalImage
                 small={image}
                 large={image}
-                className='h-[400px]  '
+                className=' w-[300px]  '
               />
             </div>
             <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">Today, 2:14pm</p>
@@ -97,22 +133,41 @@ const Chat = () => {
             </div>
             <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">Today, 2:14pm</p>
           </div>
-          <div className="border-b-[1px] border-[#00000040] mt-[24px]"></div>
-
+            {
+              messageList.map((msg) => (
+                // user
+                <div className="py-[30px] text-end">
+                <div className="bg-primary relative inline-block py-[18px] px-[56px] rounded-[10px]">
+                  <p className="font-poppins text-[16px] font-medium text-white">{msg.message}</p>
+                  <TbTriangleFilled className='absolute bottom-[-2px] right-[-6px] text-primary' />
+                </div>
+                <p className="text-[12px] mt-[10px] font-medium font-poppins text-[#00000040] leading-normal">Today, 2:12pm</p>
+              </div>
+              ))
+           }
+               
+            
+         
+            <div className="border-b-[1px] border-[#00000040] mt-[24px]"></div>
+            {/* input / send */}
+         
         </div>
-        {/* input / send */}
-        <div className="relative flex items-center">
-          <input type="text" placeholder={`Type a message...`} className="w-[537px] h-[45px] bg-[#F1F1F1] pl-[30px] rounded-[10px] outline-none" />
-          <MdOutlineEmojiEmotions className='absolute top-[13px] right-[130px] text-[#707070] text-[20px]' />
-          <CiCamera className='absolute top-[13px] right-[100px] text-[#707070] text-[20px]' />
+        <div className="relative flex items-center mt-[30px]">
+          <input value={message} onChange={handleMsg} type="text" placeholder={`Type a message...`} className="w-[537px] h-[45px] bg-[#F1F1F1] pl-[30px] rounded-[10px] outline-none" />
+              <div className="flex justify-end items-center absolute gap-x-[10px] right-[80px]  ">
+              <MdOutlineEmojiEmotions className=' text-[#707070] text-[24px] cursor-pointer' />
+          <CiCamera className=' text-[#707070] text-[26px] cursor-pointer' />
+          </div>
           
-          <button className='h-[45px] w-[45px] flex justify-center items-center ml-[20px]  text-center bg-primary rounded-[10px]'><RiSendPlaneFill className='text-white text-[20px] ' /></button>
+          <button onClick={handleMsgSend} className='h-[43px] w-[49px] flex justify-center items-center ml-[20px]  text-center bg-primary rounded-[10px]'><RiSendPlaneFill className='text-white text-[20px] ' /></button>
           
         </div>
+       
       </div>
 
 
     </div>
+   </div>
   )
 }
 

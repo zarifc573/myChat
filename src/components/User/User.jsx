@@ -24,7 +24,6 @@ const User = () => {
   useEffect(() => {
     if (!data) {
       navigate('/login')
-      
     }
   }, [])
   
@@ -46,29 +45,31 @@ const User = () => {
 }
 
   return (
-    <div>
+    <div> 
       {
         verify
           ?
-          <div className='flex fixed left-[50%] translate-x-[-50%]'>
+          <div className="w-[1440px] mx-auto shadow-custom2 px-[20px] py-[10px]">
+             <div className='flex'>
             
            
-               <LeftBar active='home' />
-        
-            
-            <div className="ml-[-20px]">
-              <GroupList />
-              <FriendReq/>
-            </div>
-            <div className="ml-[-10px]">
-              <Friends/>
-              <MyGroups/>
-            </div>
-            <div className="ml-[-6px]">
-              <UserList />
-              <BlockUsers/>
-            </div>
-            
+            <LeftBar active='home' />
+     
+         
+         <div className="">
+           <GroupList />
+           <FriendReq/>
+         </div>
+         <div className="">
+           <Friends/>
+           <MyGroups/>
+         </div>
+         <div className="">
+           <UserList />
+           <BlockUsers/>
+         </div>
+         
+      </div>
          </div>
           :
           <div className='h-screen pt-[30px] bg-cyan-700 text-center'>

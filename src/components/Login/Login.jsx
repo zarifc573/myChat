@@ -64,7 +64,7 @@ const Login = () => {
           navigate('/home')
           setEmail('')
         setPassword('')
-        }, 2000);
+        }, 3000);
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -82,7 +82,7 @@ const Login = () => {
     console.log('done')
     setTimeout(() => {
       navigate('/home')
-    }, 1500);
+    }, 1000);
   }).catch((error) => {
     const errorCode = error.code;
     console.log(errorCode);

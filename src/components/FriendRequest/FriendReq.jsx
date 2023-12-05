@@ -34,7 +34,7 @@ const FriendReq = () => {
           })
     }
     const handleFriendRemove = (item) => {
-       console.log(item)
+       remove(ref(db, 'friendRequest/' + item.id))
     }
 
     return (
@@ -56,7 +56,7 @@ const FriendReq = () => {
                         <div className="">
                                <div className="flex mt-[17px] items-center justify-between">
                             <div className="flex items-center">
-                            <img src={raghav} alt="" />
+                            <img src={item.senderimg} alt="" className='h-[51px] w-[51px] rounded-full' />
                         <div className="ml-[14px]">
                             <p className="text-[16px] font-semibold font-poppins">{item.sendername}</p>
                             <p className="text-[14px] font-medium font-poppins text-[#4D4D4DBF] pt-[6px]">Dinner?</p>

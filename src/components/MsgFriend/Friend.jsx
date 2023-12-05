@@ -1,7 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 import grpImg from '../../assets/group.png'
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
+import { useDispatch, useSelector } from 'react-redux';
+import { operatingChatInfo } from '../../Redux/chatBoxSlice';
+
 const Friend = () => {
+    
+  const data = useSelector((state) => state.clientLoginInfo.clientInfo)
+    const info = useSelector((state) => state.operatingChatInfo.operator)
+    console.log(info);
+    const db = getDatabase();
+    const dispatch =useDispatch()
+    const [friendLists, setFriendLists] = useState([])
+    useEffect(() => {
+      const friendRef = ref(db, 'friend/');
+      onValue(friendRef, (snapshot) => {
+          let arr=[]
+          snapshot.forEach((item) => {
+            if (data.uid == item.val().recieverid || data.uid == item.val().senderid) {
+              arr.push({...item.val(), key:item.key});
+              }
+          })
+          setFriendLists(arr)
+      });
+    }, [])
+    const handleFriendInfo = (item) => {
+        if (data.uid == item.senderid) {
+            dispatch(operatingChatInfo({
+                status: 'one',
+                id: item.recieverid,
+                name:item.recievername
+            }))
+            localStorage.setItem('operatingChatInfo', JSON.stringify(operatingChatInfo(item)))
+        } else {
+            dispatch(operatingChatInfo({
+                status: 'one',
+                id: item.senderid,
+                name:item.sendername
+            }))
+            localStorage.setItem('operatingChatInfo', JSON.stringify(operatingChatInfo(item)))
+        }
+    }
   return (
       <div>
            <div className=' w-[427px] ml-[43px] h-[451px] relative'>
@@ -21,14 +61,22 @@ const Friend = () => {
         </div>
 
 
-        
-           
-                    
-                    <div className="cursor-pointer">
-                            <div className="flex mt-[17px] items-center">
+                      {
+                          friendLists.map((item) => (
+                            <div onClick={()=>handleFriendInfo(item)} className="cursor-pointer hover:bg-primary hover:w-full hover:h-full hover:rounded-lg hover:px-[20px] hover:py-[2px] hover:mt-[5px] hover:text-white duration-200 ">
+                            <div className="flex mt-[17px] items-center ">
                          <img src={grpImg} alt="" />
             <div className="ml-[14px]">
-                <p className="text-[18px] font-semibold font-poppins">Raghav</p>
+                                        <p className="text-[18px] font-semibold font-poppins">
+                                        {
+                                        item.recieverid == data.uid
+                                            ?
+                                            item.sendername
+                                            :
+                                            item.recievername
+                                        }
+                                              
+                                        </p>
                 <p className="text-[14px] font-medium font-poppins text-[#4D4D4DBF] pt-[6px]">Dinner?</p>
             </div>
             {/* <div className="bg-primary px-[22px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px]">
@@ -37,6 +85,11 @@ const Friend = () => {
                         </div>
                         <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
                      </div>
+                          ))           
+                        }
+           
+                    
+                    
                    
             
            

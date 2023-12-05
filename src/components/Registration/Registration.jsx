@@ -68,7 +68,7 @@ const Registration = () => {
         setPassword('')
         setTimeout(() => {
           navigate('/login')
-        },1000 );
+        },3000 );
       });
         }).then(() => {
           set(ref(db, 'users/' + user.user.uid), {
@@ -100,7 +100,7 @@ const Registration = () => {
           } */}
           <ToastContainer
               position="top-right"
-              autoClose={5000}
+              // autoClose={5000}
               hideProgressBar={false}
               newestOnTop={false}
               closeOnClick

@@ -6,12 +6,14 @@ import userImg from '../../assets/user.png'
 import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
 import { useSelector } from "react-redux";
+import { getDatabase,  ref as dbRef, set } from "firebase/database";
 
 
 const ImageUpload = () => {
   const data = useSelector((state) => state.clientLoginInfo.clientInfo)
  console.log(data)
   const auth = getAuth();
+  const db= getDatabase()
   const navigate = useNavigate()
   const storage = getStorage();
     const [image, setImage] = useState();
@@ -50,6 +52,11 @@ const ImageUpload = () => {
               updateProfile(auth.currentUser, {
                 photoURL: downloadURL
               }).then(() => {
+                set(dbRef(db, 'users/' + data.uid), {
+                  image: downloadURL,
+                  username: data.displayName,
+                  email: data.email,
+                })
                 setImage('')
                 setCropData('')
                 setTimeout(() => {

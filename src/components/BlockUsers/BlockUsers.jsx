@@ -19,7 +19,8 @@ const BlockUsers = () => {
                     arr.push({
                         id:item.key,
                         block: item.val().block,
-                        blockid:item.val().blockid,
+                        blockid: item.val().blockid,
+                        blockimg:item.val().blockimg,
                         
                     })
                 
@@ -28,7 +29,8 @@ const BlockUsers = () => {
                     arr.push({
                         id:item.key,
                         blockedby: item.val().blockedby,
-                        blockedbyid:item.val().blockedbyid,
+                        blockedbyid: item.val().blockedbyid,
+                        blockedbyimg: item.val().blockedbyimg,
                     })
                
               }
@@ -43,8 +45,10 @@ const BlockUsers = () => {
         set(push(ref(db, 'friend/')), {
             sendername: item.block,
             senderid: item.blockid,
+            senderimg:item.blockimg,
             recievername: data.displayName,
-            recieverid: data.uid
+            recieverid: data.uid,
+            recieverimg:data.photoURL,
             
           }).then(() => {
                   remove((ref(db, 'block/' + item.id)))
@@ -65,7 +69,18 @@ const BlockUsers = () => {
                   {
                       blockLists.map((item) => (
                         <div className="flex mt-[17px] items-center">
-                        <img src={raghav} alt="" />
+                              <img src={
+                                  item.blockedbyid == data.uid ?
+                                      item.blockimg
+                                      :
+                                      item.blockedbyimg || 
+                                      item.blockid == data.uid ?
+                                      item.blockedbyimg
+                                      :
+                                      item.blockimg
+                        }
+                                  alt="" className='h-[51px] w-[51px] rounded-full' />
+                             
                         <div className="ml-[14px]">
                                   <p className="text-[14px] font-semibold font-poppins">{item.block}</p>
                                   <p className="text-[14px] font-semibold font-poppins">{item.blockedby}</p>
@@ -76,10 +91,9 @@ const BlockUsers = () => {
                               {
                                
                                   !item.blockedby &&
-                                  <div onClick={()=>{handleUnblock(item)}} className="bg-red-900 px-[12px] rounded-[5px] cursor-pointer py-[6px] ml-auto mr-[30px]">
-                                  <p className='text-white font-poppins text-[18px] font-semibold'>Unblock</p>
+                                  <div onClick={()=>{handleUnblock(item)}} className="bg-black px-[12px] rounded-[5px] cursor-pointer py-[6px] ml-auto mr-[30px]">
+                                  <p className='text-white font-poppins text-[18px] font-semibold'>Unblock !</p>
                                         </div>
-                                
                                               }
                                                 
                  

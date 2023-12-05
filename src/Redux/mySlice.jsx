@@ -10,7 +10,6 @@ export const clientSlice = createSlice({
           state.clientInfo = action.payload
       console.log(state.clientInfo)
       console.log(action.payload)
-    
     },
   }
 })

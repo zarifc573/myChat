@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { BiSolidCheckboxChecked } from "react-icons/bi";
 
 
-const Friends = () => {
+const UserList = () => {
     const [friendReqList, setFriendReqList] = useState([])
     const [friendList, setFriendList] = useState([])
     const [blockList, setBlockList] = useState([])
@@ -31,9 +31,11 @@ const Friends = () => {
         console.log(item)
         set(push(ref(db, 'friendRequest/')), {
             recievername : item.username,
-            recieverid : item.userId,
+            recieverid: item.userId,
+            recieverimg:item.image,
             sendername : data.displayName,
-            senderid : data.uid
+            senderid: data.uid,
+            senderimg:data.photoURL
           });
     }
    
@@ -71,8 +73,6 @@ const Friends = () => {
 
     const handleSearchList = (e) => {
         let arr=[]
-        setSearchDataList(e.target.value)
-        console.log(e.target.value)
         if (e.target.value.length == 0) {
             setSearchDataList([])
         } else {
@@ -104,7 +104,7 @@ const Friends = () => {
                         searchDataList.map((item) => (
                             <div className="">
                                     <div className="flex mt-[17px] items-center">
-                                    <img src={raghav} alt="" className='h-[51px] w-[51px] rounded-full ' />
+                                    <img src={item.image} alt="" className='h-[58px] w-[58px] rounded-full ' />
                                     <div className="ml-[14px]">
                                         <p className="text-[14px] font-semibold font-poppins">{item.username}</p>
                                         <p className="text-[12px] font-medium font-poppins text-[#4D4D4DBF] pt-[6px]">Today, 8:56pm</p>
@@ -152,7 +152,7 @@ const Friends = () => {
                         userList.map((item) => (
                             <div className="">
                                     <div className="flex mt-[17px] items-center">
-                                    <img src={raghav} alt="" className='h-[51px] w-[51px] rounded-full ' />
+                                    <img src={item.image} alt="" className='h-[58px] w-[58px] rounded-full ' />
                                     <div className="ml-[14px]">
                                         <p className="text-[14px] font-semibold font-poppins">{item.username}</p>
                                         <p className="text-[12px] font-medium font-poppins text-[#4D4D4DBF] pt-[6px]">Today, 8:56pm</p>
@@ -206,4 +206,4 @@ const Friends = () => {
     )
 }
 
-export default Friends
+export default UserList
