@@ -3,9 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 export const chatBoxSlice = createSlice({
   name: 'operatingChat',
   initialState: {
-    operator : localStorage.getItem('operatingChatInfo') ? JSON.parse(localStorage.getItem('operatingChatInfo'))
-      :
-      null
+    operator: 'hey'
+    // localStorage.getItem('operatingChatInfo') ? JSON.parse(localStorage.getItem('operatingChatInfo'))
+      // :
+      // null
   },
   reducers: {
     operatingChatInfo: (state, action) => {

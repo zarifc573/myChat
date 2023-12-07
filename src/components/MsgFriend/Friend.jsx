@@ -26,20 +26,21 @@ const Friend = () => {
       });
     }, [])
     const handleFriendInfo = (item) => {
+        console.log(item);
         if (data.uid == item.senderid) {
             dispatch(operatingChatInfo({
                 status: 'one',
                 id: item.recieverid,
-                name:item.recievername
+                name: item.recievername,
+                img:item.reciverimg
             }))
-            localStorage.setItem('operatingChatInfo', JSON.stringify(operatingChatInfo(item)))
         } else {
             dispatch(operatingChatInfo({
                 status: 'one',
                 id: item.senderid,
-                name:item.sendername
+                name: item.sendername,
+                img:item.senderimg
             }))
-            localStorage.setItem('operatingChatInfo', JSON.stringify(operatingChatInfo(item)))
         }
     }
   return (
@@ -63,9 +64,24 @@ const Friend = () => {
 
                       {
                           friendLists.map((item) => (
-                            <div onClick={()=>handleFriendInfo(item)} className="cursor-pointer hover:bg-primary hover:w-full hover:h-full hover:rounded-lg hover:px-[20px] hover:py-[2px] hover:mt-[5px] hover:text-white duration-200 ">
-                            <div className="flex mt-[17px] items-center ">
-                         <img src={grpImg} alt="" />
+                              <div className="">
+                                   <div onClick={()=>handleFriendInfo(item)} className="cursor-pointer select-none hover:bg-primary hover:w-full hover:h-full hover:rounded-lg hover:px-[20px] hover:py-[6px] hover:mt-[15px] mt-[25px] hover:text-white duration-200 ">
+                            <div className="flex  items-center ">
+                         <img src= {
+                                        item.recieverid == data.uid
+                                            ?
+                                            item.senderimg
+                                            :
+                                                  item.recieverimg
+                                                  ||
+                                                 
+                                                    item.senderid == data.uid
+                                                        ?
+                                                        item.recieverimg 
+                                                        :
+                                                        item.senderimg
+                                                    
+                                        }alt="" className='h-[51px] w-[51px] rounded-full'/>
             <div className="ml-[14px]">
                                         <p className="text-[18px] font-semibold font-poppins">
                                         {
@@ -83,8 +99,9 @@ const Friend = () => {
                 <p className='text-white font-poppins text-[20px] font-semibold'>Join</p>
             </div> */}
                         </div>
-                        <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
                      </div>
+                        <div className="border-b-[2px] mx-[20px] py-[7px]"></div>
+                           </div>
                           ))           
                         }
            

@@ -69,11 +69,18 @@ const Friends = () => {
             friendLists.map((item) => (
               <div className="">
                  <div className="flex mt-[17px] items-center">
-              <img src={   item.recieverimg == data.photoURL
+              <img src={   item.recieverid == data.uid
                         ?
                         item.senderimg
                         :
-                        item.recieverimg} alt="" className='h-[56px] w-[56px] rounded-full' />
+                    item.recieverimg
+                    ||
+                    item.senderid == data.uid
+                        ?
+                        item.recieverimg
+                        :
+                    item.senderimg
+                  } alt="" className='h-[56px] w-[56px] rounded-full' />
               <div className="ml-[14px]">
                   <p className="text-[14px] font-semibold font-poppins">
                     {
