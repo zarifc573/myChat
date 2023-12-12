@@ -5,7 +5,7 @@ import "cropperjs/dist/cropper.css";
 import userImg from '../../assets/user.png'
 import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getDatabase,  ref as dbRef, set } from "firebase/database";
 
 
@@ -13,6 +13,7 @@ const ImageUpload = () => {
   const data = useSelector((state) => state.clientLoginInfo.clientInfo)
  console.log(data)
   const auth = getAuth();
+  const dispatch= useDispatch()
   const db= getDatabase()
   const navigate = useNavigate()
   const storage = getStorage();
@@ -24,7 +25,7 @@ const ImageUpload = () => {
     navigate('/home')
 }
   
-        const handleUploadChange = (e) => {
+        const handleUploadChange = (e, user) => {
             e.preventDefault();
             let files;
             if (e.dataTransfer) {
@@ -37,7 +38,9 @@ const ImageUpload = () => {
               setImage(reader.result);
             };
             reader.readAsDataURL(files[0]);
-            setCoverShow(true)
+          setCoverShow(true)
+          dispatch(clientLoginInfo(user))
+          localStorage.setItem('clientLoginInfo', JSON.stringify(clientLoginInfo(user)))
           };
    
     

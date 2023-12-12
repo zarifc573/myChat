@@ -122,7 +122,7 @@ const UserList = () => {
                                             friendList.includes(item.userId + data.uid) ||
                                             friendList.includes(data.uid + item.userId)
                                             ?
-                                            <div className="bg-primary px-[12px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px] flex items-center">
+                                            <div className="bg-green-600 px-[12px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px] flex items-center">
                                                     <button className='text-white font-poppins text-[16px] font-semibold ml-[5px]'>Friend</button>
                                                     <BiSolidCheckboxChecked className='text-[24px] text-white ml-[5px]'/>
                                             </div>
@@ -170,7 +170,7 @@ const UserList = () => {
                                             friendList.includes(item.userId + data.uid) ||
                                             friendList.includes(data.uid + item.userId)
                                             ?
-                                            <div className="bg-primary px-[12px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px] flex items-center">
+                                            <div className="bg-green-600 px-[12px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px] flex items-center">
                                                     <button className='text-white font-poppins text-[16px] font-semibold ml-[5px]'>Friend</button>
                                                     <BiSolidCheckboxChecked className='text-[24px] text-white ml-[5px]'/>
                                             </div>

@@ -95,8 +95,8 @@ const Friends = () => {
               </div>
         
                 {/* <p className="text-[#00000080] text-[10px] font-medium font-poppins ml-auto mr-[20px]">Today, 8:56pm</p> */}
-                <div onClick={()=>{handleBlock(item)}} className="bg-red-500 px-[22px] rounded-[5px] cursor-pointer py-[7px] ml-auto mr-[30px]">
-                            <p className='text-white font-poppins text-[20px] font-semibold'>Block</p>
+                <div onClick={()=>{handleBlock(item)}} className="bg-red-500 px-[22px] rounded-[5px] cursor-pointer py-[5px] ml-auto mr-[30px]">
+                            <p className='text-white font-poppins text-[18px] font-semibold'>Block</p>
                         </div>
           
                 </div>

@@ -13,33 +13,40 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux'
 import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import moment from 'moment'
+import { FaImages } from "react-icons/fa";
+import { getDownloadURL, getStorage, ref as sref, uploadBytes } from "firebase/storage";
+import { getAuth } from 'firebase/auth'
+import EmojiPicker from 'emoji-picker-react';
+
 const Chat = () => {
   const info = useSelector((state) => state.operatingChatInfo.operator)
   const data = useSelector((state) => state.clientLoginInfo.clientInfo)
   const db = getDatabase();
+  const auth = getAuth();
+  const storage = getStorage();
   const [message, setMessage]= useState('')
   const [messageList, setMessageList]= useState([])
-  const saveMessageToLocalStorage = (message) => {
-    // Retrieve existing messages from local storage
-    const existingMessages = localStorage.getItem('messages')
-       ? JSON.parse(localStorage.getItem('messages'))
-       : [];
-   
-    // Add the new message to the existing messages array
-    const updatedMessages = [...existingMessages, message];
-   
-    // Save the updated messages array back to local storage
-    localStorage.setItem('messages', JSON.stringify(updatedMessages));
-   };
+  const [showEmoji, setShowEmoji]= useState(false)
+
   const handleMsg = (e) => {
     setMessage(e.target.value)
   }
+  const handleMsgSendWithKeyPress = (e) => {
+    // if (e.target.key === 'Enter') {
+    //   console.log('hello')
+    // }
+    // if (e.key === 'Enter') {
+    //   console.log(e, 'hello')
+    // }
+    if (e.key == 'Enter') {
+      console.log('press here')
+    }
+  }
   const handleMsgSend = () => {
     if (message.length > 0) {
-        // Save the message to local storage
-    saveMessageToLocalStorage(message);
       if (info.status == 'one') {
         set(push(ref(db, 'message/')), {
+          id: info.id,
           message: message,
           senderid: data.uid,
           sendername: data.displayName,
@@ -70,8 +77,43 @@ const Chat = () => {
       setMessageList(arr)
      
     });
-}, [])
+}, [info.id])
   
+  const handleImageHandle = () => {
+    
+  }
+
+  const handleInputImg = (e) => {
+    console.log(e.target.files[0])
+const storageRef = sref(storage,'url');
+
+// 'file' comes from the Blob or File API
+uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
+  getDownloadURL(storageRef).then((downloadURL) => {
+    console.log('File available at', downloadURL);
+    if (info.status == 'one') {
+      set(push(ref(db, 'message/')), {
+        img: downloadURL,
+        senderid: data.uid,
+        sendername: data.displayName,
+        recieverid: info.id,
+        recievername: info.name,
+        date: `${new Date().getFullYear()} - ${new Date().getMonth() + 1} - ${new Date().getDate()}, ${new Date().getHours()} : ${new Date().getMinutes()} : ${new Date().getSeconds()}`
+      });
+    } else {
+      
+    }
+  });
+});
+  }
+  const handleClickEmoji = () => {
+    setShowEmoji(!showEmoji)
+  }
+
+  const handleEmoji = (emoji) => {
+    console.log(emoji.emoji)
+    setMessage(message+ emoji.emoji)
+  }
   return (
     <div className="w-[1440px] mx-auto shadow-custom2 px-[20px] py-[10px]">
        <div className='flex'>
@@ -162,22 +204,58 @@ const Chat = () => {
             {
               messageList.map((item) => (
                 item.senderid == data.uid ?
+                  
+                  item.img ? 
+                  <div className="py-[30px] text-end ">
+                  <div className="inline-block py-[18px] rounded-[10px]">
+                    
+                    <ModalImage
+                      small={item.img}
+                      large={item.img}
+                      className='w-[200px] h-[300px]'
+                    />
+                  </div>
+                      <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">
+                      {
+                       moment(item.date, "YYYYMMDD hh:mm:ss a").fromNow()
+                    }
+                  </p>
+                </div>
+                    :
+                  
                      <div className="py-[30px] text-end">
-                <div className="bg-primary relative inline-block leading-[20px] py-[18px] px-[56px] rounded-[10px]">
-                  <p className="font-poppins text-[16px] font-medium text-white">{item.message}</p>
+                <div className="bg-primary relative inline-block leading-[20px] py-[18px] px-[56px] rounded-[10px] text-start">
+                  <p className="font-poppins text-[16px] font-medium text-white leading-[30px]">{item.message}</p>
                   <TbTriangleFilled className='absolute bottom-[-2px] right-[-6px] text-primary' />
                 </div>
                     <p className="text-[12px] mt-[10px] font-medium font-poppins text-[#00000040] leading-normal">
                       {
-                       moment(item.date, "YYYYMMDD hh:mm:ss").fromNow()
+                       moment(item.date, "YYYYMMDD hh:mm:ss a").fromNow()
                     }
                 </p>
                   </div>
                
                   :
+                  item.img ?
+                  <div className="py-[30px] ">
+                  <div className="inline-block py-[18px] rounded-[10px]">
+                    
+                    <ModalImage
+                      small={item.img}
+                      large={item.img}
+                      className=' w-[200px] h-[300px]  '
+                    />
+                  </div>
+                      <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">
+                      {
+                       moment(item.date, "YYYYMMDD hh:mm:ss a").fromNow()
+                    }
+                  </p>
+                </div>
+                    :
                   <div className="py-[30px]">
             <div className="bg-[#F1F1F1] relative inline-block py-[18px] px-[56px] rounded-[10px]">
-              <p className="font-poppins text-[16px] font-medium text-black">{item.message}</p>
+              <p className="font-poppins text-[16px] font-medium text-black leading-[30px]">{item.message}</p>
               <TbTriangleFilled className='absolute bottom-[-2px] left-[-6px] text-[#F1F1F1]' />
             </div>
                     <p className="text-[12px] font-medium font-poppins text-[#00000040] leading-normal">
@@ -192,19 +270,32 @@ const Chat = () => {
            }
                
             
-         
-            <div className="border-b-[1px] border-[#00000040] mt-[24px]"></div>
             {/* input & send */}
          
-        </div>
-        <div className="relative flex items-center mt-[30px]">
+          </div>
+          <div className="border-t-[1px] border-[#00000040]"></div>
+          <div className="relative flex items-center mt-[30px]">
+            {
+              showEmoji &&
+              <div className='absolute top-[-480px] right-0'>
+              <EmojiPicker  onEmojiClick={(emoji)=>handleEmoji(emoji)} />
+            </div>
+            }
+         
           <input value={message} onChange={handleMsg} type="text" placeholder={`Type a message...`} className="w-[537px] h-[45px] bg-[#F1F1F1] pl-[30px] rounded-[10px] outline-none" />
-              <div className="flex justify-end items-center absolute gap-x-[10px] right-[80px]  ">
-              <MdOutlineEmojiEmotions className=' text-[#707070] text-[24px] cursor-pointer' />
+            <div className="flex justify-end items-center absolute gap-x-[10px] right-[80px]  ">
+            <div className="">
+              <label>
+                <input onChange={handleInputImg} type="file" className='hidden'/>
+                <FaImages onClick={handleImageHandle} className='text-[#707070] text-[24px] cursor-pointer' />
+              </label>
+            </div>
+              <MdOutlineEmojiEmotions onClick={handleClickEmoji} className=' text-[#707070] text-[24px] cursor-pointer select-none' />
+             
           <CiCamera className=' text-[#707070] text-[26px] cursor-pointer' />
           </div>
           
-          <button onClick={handleMsgSend} className='h-[43px] w-[49px] flex justify-center items-center ml-[20px]  text-center bg-primary rounded-[10px]'><RiSendPlaneFill className='text-white text-[20px] ' /></button>
+          <button onKeyPress={handleMsgSendWithKeyPress} onClick={handleMsgSend} className='h-[43px] w-[49px] flex justify-center items-center ml-[20px]  text-center bg-primary rounded-[10px]'><RiSendPlaneFill className='text-white text-[20px] ' /></button>
           
         </div>
        

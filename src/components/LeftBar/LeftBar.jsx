@@ -27,8 +27,7 @@ const LeftBar = ({active}) => {
          
             },1000)
             
-        }).catch((error) => {
-        });
+        })
   }
   
   
